@@ -79,7 +79,7 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         print("\(self.dynamicType).audioRecorderDidFinishRecording(\(recorder),\(flag)")
         if (flag) {
-            self.performSegueWithIdentifier("stopRecording", sender: audioRecorder.url)
+            performSegueWithIdentifier("stopRecording", sender: audioRecorder.url)
         } else {
             print("Saving of recording failed")
         }
