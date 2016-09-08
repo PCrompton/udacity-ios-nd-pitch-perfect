@@ -60,6 +60,15 @@ class PlaySoundsViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         print("\(self.dynamicType).viewWillAppear(\(animated))")
         configureUI(.NotPlaying)
+        
+        snailButton.imageView?.contentMode = .ScaleAspectFit
+        chipmunkButton.imageView?.contentMode = .ScaleAspectFit
+        rabbitButton.imageView?.contentMode = .ScaleAspectFit
+        vaderButton.imageView?.contentMode = .ScaleAspectFit
+        echoButton.imageView?.contentMode = .ScaleAspectFit
+        reverbButton.imageView?.contentMode = .ScaleAspectFit
+        playButton.imageView?.contentMode = .ScaleAspectFit
+        stopButton.imageView?.contentMode = .ScaleAspectFit
     }
     
     override func didReceiveMemoryWarning() {
