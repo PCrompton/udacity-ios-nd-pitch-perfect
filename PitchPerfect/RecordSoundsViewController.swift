@@ -18,40 +18,32 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
     var audioRecorder:AVAudioRecorder!
     
     override func viewDidLoad() {
-        print("\(self.dynamicType).viewDidLoad()")
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
-        print("\(self.dynamicType).didReceiveMemoryWarning()")
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 
-    @IBAction func recordAudio(sender: AnyObject){
-        print("\(self.dynamicType).recordAudio(\(sender))")
+    @IBAction func recordAudio(_ sender: AnyObject){
         configureUI(isRecording: true)
         
-        let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0] as String
+        let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
         let recordingName = "recordedVoice.wav"
         let pathArray = [dirPath, recordingName]
-        let filePath = NSURL.fileURLWithPathComponents(pathArray)
-        //print(filePath)
+        let filePath = NSURL.fileURL(withPathComponents: pathArray)
         
         let session = AVAudioSession.sharedInstance()
         try! session.setCategory(AVAudioSessionCategoryPlayAndRecord)
-        try! audioRecorder = AVAudioRecorder(URL: filePath!, settings: [:])
+        try! audioRecorder = AVAudioRecorder(url: filePath!, settings: [:])
         audioRecorder.delegate = self
-        audioRecorder.meteringEnabled = true
+        audioRecorder.isMeteringEnabled = true
         audioRecorder.prepareToRecord()
         audioRecorder.record()
     }
     
-    @IBAction func stopRecording(sender: AnyObject) {
-        print("\(self.dynamicType).stopRecording(\(sender))")
+    @IBAction func stopRecording(_ sender: AnyObject) {
         configureUI(isRecording: false)
         audioRecorder.stop()
         let audioSession = AVAudioSession.sharedInstance()
@@ -59,38 +51,35 @@ class RecordSoundsViewController: UIViewController , AVAudioRecorderDelegate {
         
     }
     
-    func configureUI(isRecording isRecording: Bool) {
+    func configureUI(isRecording: Bool) {
         if isRecording {
-            recordButton.enabled = false
-            stopRecordingButton.enabled = true
+            recordButton.isEnabled = false
+            stopRecordingButton.isEnabled = true
             recordingLabel.text = "Recording in progress"
         } else {
-            recordButton.enabled = true
-            stopRecordingButton.enabled = false
+            recordButton.isEnabled = true
+            stopRecordingButton.isEnabled = false
             recordingLabel.text = "Tap to Record"
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        print("\(self.dynamicType).viewWillAppear(\(animated))")
-        stopRecordingButton.enabled = false
+    override func viewWillAppear(_ animated: Bool) {
+        stopRecordingButton.isEnabled = false
     }
     
-    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
-        print("\(self.dynamicType).audioRecorderDidFinishRecording(\(recorder),\(flag)")
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if (flag) {
-            performSegueWithIdentifier("stopRecording", sender: audioRecorder.url)
+            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
         } else {
-            let alertController = UIAlertController(title: "Recording Error", message: "Saving of recording failed", preferredStyle: .Alert)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            let alertController = UIAlertController(title: "Recording Error", message: "Saving of recording failed", preferredStyle: .alert)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        print("\(self.dynamicType).prepareForSegue(\(segue), \(sender))")
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "stopRecording") {
-            let playSoundsVC = segue.destinationViewController as! PlaySoundsViewController
-            let recordedAudioURL = sender as! NSURL
+            let playSoundsVC = segue.destination as! PlaySoundsViewController
+            let recordedAudioURL = sender as! URL
             playSoundsVC.recordedAudioURL = recordedAudioURL
         }
     }

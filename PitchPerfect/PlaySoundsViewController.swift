@@ -20,59 +20,55 @@ class PlaySoundsViewController: UIViewController {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
     
-    var recordedAudioURL: NSURL!
+    var recordedAudioURL: URL!
     var audioFile: AVAudioFile!
     var audioEngine: AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
 
-    var stopTimer: NSTimer?
+    var stopTimer: Timer?
     
-    enum ButtonType: Int { case Slow = 0, Fast, Chipmunk, Vader, Echo, Reverb, Play }
+    enum ButtonType: Int { case slow = 0, fast, chipmunk, vader, echo, reverb, play }
     
-    @IBAction func playSoundForButton(sender: UIButton) {
-        print("\(self.dynamicType).playSoundForButton(\(sender))")
+    @IBAction func playSoundForButton(_ sender: UIButton) {
         switch(ButtonType(rawValue: sender.tag)!) {
-        case .Slow: playSound(rate: 0.5)
-        case .Fast: playSound(rate: 1.5)
-        case .Chipmunk: playSound(pitch: 1000)
-        case .Vader: playSound(pitch: -1000)
-        case .Echo: playSound(echo: true)
-        case .Reverb: playSound(reverb: true)
-        case .Play: playSound()
+        case .slow: playSound(rate: 0.5)
+        case .fast: playSound(rate: 1.5)
+        case .chipmunk: playSound(pitch: 1000)
+        case .vader: playSound(pitch: -1000)
+        case .echo: playSound(echo: true)
+        case .reverb: playSound(reverb: true)
+        case .play: playSound()
         }
-        configureUI(.Playing)
+        configureUI(.playing)
     }
     
-    @IBAction func stopButtonPressed(sender: AnyObject) {
-        print("\(self.dynamicType).stopButtonPressed(\(sender))")
+    @IBAction func stopButtonPressed(_ sender: AnyObject) {
+        print("\(type(of: self)).stopButtonPressed(\(sender))")
         stopAudio()
     
     }
     
-    var recordedAudio: NSURL!
+    var recordedAudio: URL!
     
     override func viewDidLoad() {
-        print("\(self.dynamicType).viewDidLoad()")
         super.viewDidLoad()
         setupAudio()
     }
 
-    override func viewWillAppear(animated: Bool) {
-        print("\(self.dynamicType).viewWillAppear(\(animated))")
-        configureUI(.NotPlaying)
+    override func viewWillAppear(_ animated: Bool) {
+        configureUI(.notPlaying)
         
-        snailButton.imageView?.contentMode = .ScaleAspectFit
-        chipmunkButton.imageView?.contentMode = .ScaleAspectFit
-        rabbitButton.imageView?.contentMode = .ScaleAspectFit
-        vaderButton.imageView?.contentMode = .ScaleAspectFit
-        echoButton.imageView?.contentMode = .ScaleAspectFit
-        reverbButton.imageView?.contentMode = .ScaleAspectFit
-        playButton.imageView?.contentMode = .ScaleAspectFit
-        stopButton.imageView?.contentMode = .ScaleAspectFit
+        snailButton.imageView?.contentMode = .scaleAspectFit
+        chipmunkButton.imageView?.contentMode = .scaleAspectFit
+        rabbitButton.imageView?.contentMode = .scaleAspectFit
+        vaderButton.imageView?.contentMode = .scaleAspectFit
+        echoButton.imageView?.contentMode = .scaleAspectFit
+        reverbButton.imageView?.contentMode = .scaleAspectFit
+        playButton.imageView?.contentMode = .scaleAspectFit
+        stopButton.imageView?.contentMode = .scaleAspectFit
     }
     
     override func didReceiveMemoryWarning() {
-        print("\(self.dynamicType).didReceiveMemoryWarning()")
         super.didReceiveMemoryWarning()
     }
 }
